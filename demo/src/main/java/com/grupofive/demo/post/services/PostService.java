@@ -1,5 +1,7 @@
 package com.grupofive.demo.post.services;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.grupofive.demo.post.entities.Post;
@@ -22,4 +24,9 @@ public class PostService {
 
         repository.save(post);
     }
+
+    public Post retrievePost(UUID id){
+        return repository.findById(id).get();
+    }
+
 }
