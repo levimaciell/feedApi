@@ -45,4 +45,8 @@ public class PostService {
         post.setMessage(postUpdate.getChangeMessage());
         repository.save(post);
     }
+
+    public void deletePost(Long id){
+        repository.deleteById(id);
+    }
 }
