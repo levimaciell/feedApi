@@ -49,4 +49,8 @@ public class PostService {
     public void deletePost(Long id){
         repository.deleteById(id);
     }
+
+    public PostRepository getRepository(){
+        return repository;
+    }
 }
