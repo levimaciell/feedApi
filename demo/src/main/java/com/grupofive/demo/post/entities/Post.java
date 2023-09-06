@@ -14,8 +14,8 @@ import jakarta.persistence.Table;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(columnDefinition = "TEXT")
     private String message;
@@ -24,16 +24,16 @@ public class Post {
 
     }
 
-    public Post(UUID id, String message){
+    public Post(Long id, String message){
         this.id = id;
         this.message = message;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
