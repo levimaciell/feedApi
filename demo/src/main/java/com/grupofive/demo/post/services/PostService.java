@@ -17,7 +17,7 @@ public class PostService {
     
 
     public void createPost(PostCreationDto post){
-        if(post.getPostMessage() == null || post.getPostMessage().isEmpty())
+        if(post == null || post.getPostMessage().isBlank())
             throw new PostServiceException("Post Message is empty!");
 
         //Create empty post. Let spring take care of the id

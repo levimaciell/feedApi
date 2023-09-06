@@ -6,9 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -44,9 +42,19 @@ public class PostServiceTest {
         List<Post> list = tRepository.findAll();
         
         assertEquals(1, list.size(), "List/Db should only have one element, since it was only sucessfully inserted once");
-        assertEquals(postMessage, list.get(0).getMessage(), "The first and only element does not match the given string");
+        assertEquals(postMessage.getPostMessage(), list.get(0).getMessage(), "The first and only element does not match the given string");
 
         //Test if it has an id
         assertNotNull(list.get(0), "The element does not have an id.\nUUID: " + list.get(0).getId());
     }
+
+    @Test
+    void testRetrievePost(){
+
+    }
+
+
+
+
+
 }
