@@ -20,13 +20,15 @@ import com.grupofive.demo.post.repositories.PostRepository;
 public class PostServiceTest { 
 
     @Autowired
-    PostService testService;
+    private PostService testService;
+    @Autowired
+    private PostRepository tRepository;
+
 
     @Test
     @DirtiesContext
     void testCreatePost() {
         //PostService testService = new PostService();
-        PostRepository tRepository = testService.getRepository();
         
         //Test if throws exception with empty message or null
         PostCreationDto testPost = new PostCreationDto("");
@@ -49,8 +51,28 @@ public class PostServiceTest {
     }
 
     @Test
+    @DirtiesContext
     void testRetrievePost(){
 
+        //Checking if context is dirty
+        assertEquals(0L,tRepository.count(), "Context could be dirty. NumberOfPosts: " + tRepository.count());
+        
+        //Create a new post to db, and check if it is there
+        testService.createPost(new PostCreationDto("Test post"));
+        Long count = tRepository.count();
+        assertEquals(1L,count, "There should be only one Post in db, but there is actually " + count);
+
+        //Retrieve post from service, and see if the message matches the one given above
+        Post retrieved = testService.retrievePost(1L);
+        assertEquals("Test post", retrieved.getMessage());
+
+        //Retrieve post with null id
+        PostServiceException ex1 = assertThrows(PostServiceException.class, () -> testService.retrievePost(null));
+        assertEquals("Given id is null!", ex1.getMessage());
+
+        //Retrieve non existent post in db. Check if throws PostServiceException
+        PostServiceException ex2 = assertThrows(PostServiceException.class, () -> testService.retrievePost(90L));
+        assertEquals("Post not found in database", ex2.getMessage());
     }
 
 

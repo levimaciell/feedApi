@@ -1,5 +1,7 @@
 package com.grupofive.demo.post.services;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,14 @@ public class PostService {
     }
 
     public Post retrievePost(Long id){
-        return repository.findById(id).get();
+        if(id == null)
+            throw new PostServiceException("Given id is null!");
+        try{
+            return repository.findById(id).get();
+        }
+        catch(NoSuchElementException e){
+            throw new PostServiceException("Post not found in database");
+        }
     }
 
     public void updatePost(PostUpdateDto postUpdate){
