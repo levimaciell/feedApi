@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import com.grupofive.demo.post.dto.PostCreationDto;
+import com.grupofive.demo.post.dto.PostUpdateDto;
 import com.grupofive.demo.post.entities.Post;
 import com.grupofive.demo.post.exceptions.PostServiceException;
 import com.grupofive.demo.post.repositories.PostRepository;
@@ -75,8 +76,44 @@ public class PostServiceTest {
         assertEquals("Post not found in database", ex2.getMessage());
     }
 
+    @Test
+    @DirtiesContext
+    void testUpdatePost(){
+
+        //Checking if context is dirty
+        assertEquals(0L,tRepository.count(), "Context could be dirty. NumberOfPosts: " + tRepository.count());
+        
+        //Create a new post to db, and check if it is there
+        testService.createPost(new PostCreationDto("This is a message BEFORE update"));
+        Long count = tRepository.count();
+        assertEquals(1L,count, "There should be only one Post in db, but there is actually " + count);
+
+        //Retrieve post and see if it is there
+        Post testPost = testService.retrievePost(1L);
+        assertEquals("This is a message BEFORE update", testPost.getMessage());
+
+        //Trying to update with a null changeId non existent changeId
+        PostUpdateDto nullId = new PostUpdateDto(null, "This is a message AFTER update");
+        PostUpdateDto notExistentId = new PostUpdateDto(56L, "This is a message AFTER update");
+
+        PostServiceException ex = assertThrows(PostServiceException.class, () -> testService.updatePost(nullId));
+        assertEquals("Given id is null!", ex.getMessage());
+        ex = assertThrows(PostServiceException.class, () -> testService.updatePost(notExistentId));
+        assertEquals("Post to update not found", ex.getMessage());
+
+
+        //Trying to update with a null String or a empty string
+        PostUpdateDto nullMsg = new PostUpdateDto(1L, null);
+        PostUpdateDto blankMsg = new PostUpdateDto(1L, "");
+
+        ex = assertThrows(PostServiceException.class, () -> testService.updatePost(nullMsg));
+        assertEquals("New message to be changed is either null or empty", ex.getMessage());
+        ex = assertThrows(PostServiceException.class, () -> testService.updatePost(blankMsg));
+        assertEquals("New message to be changed is either null or empty", ex.getMessage());
 
 
 
+        //Try to update and see if it is working properly
+    }
 
 }

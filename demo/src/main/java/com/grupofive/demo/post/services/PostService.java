@@ -42,10 +42,10 @@ public class PostService {
 
     public void updatePost(PostUpdateDto postUpdate){
         if(postUpdate.getChangeId() == null)
-            throw new PostServiceException("The id of the post to be changed is null!");
+            throw new PostServiceException("Given id is null!");
         
         if(!repository.existsById(postUpdate.getChangeId()))
-            throw new PostServiceException("Post not found");
+            throw new PostServiceException("Post to update not found");
 
         if(postUpdate.getChangeMessage() == null || postUpdate.getChangeMessage().isBlank())
             throw new PostServiceException("New message to be changed is either null or empty");
