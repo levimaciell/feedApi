@@ -70,8 +70,5 @@ public class PostService {
         repository.deleteById(id);
     }
 
-    //Test only function
-    public PostRepository getRepository(){
-        return repository;
-    }
+    
 }
