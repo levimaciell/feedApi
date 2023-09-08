@@ -1,6 +1,7 @@
 package com.grupofive.demo.post.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -29,7 +30,6 @@ public class PostServiceTest {
     @Test
     @DirtiesContext
     void testCreatePost() {
-        //PostService testService = new PostService();
         
         //Test if throws exception with empty message or null
         PostCreationDto testPost = new PostCreationDto("");
@@ -111,9 +111,22 @@ public class PostServiceTest {
         ex = assertThrows(PostServiceException.class, () -> testService.updatePost(blankMsg));
         assertEquals("New message to be changed is either null or empty", ex.getMessage());
 
+        //Try to update and see if id is same and message is changed
+        PostUpdateDto p1 = new PostUpdateDto(1L, "This is a message AFTER update");
+        testService.updatePost(p1);
 
+        assertEquals(1, tRepository.count(), "After update, there should be only one post, but "
+        + tRepository.count() + " was found");
 
-        //Try to update and see if it is working properly
+        Post testPost2 = testService.retrievePost(1L);
+
+        assertEquals(testPost.getId(), testPost2.getId(), "Id should stay the same after update.\n"
+        + "Actual: " + testPost2.getId() + "\nExpected: " + testPost.getId());
+
+        assertNotEquals(testPost.getMessage(), testPost2.getMessage(), "Message should be different after update.\n"
+        + "Actual: " + testPost2.getMessage() + "\nExpected: " + testPost.getMessage());
+
+        assertEquals("This is a message AFTER update", testPost2.getMessage());
     }
 
 }

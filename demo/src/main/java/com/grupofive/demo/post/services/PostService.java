@@ -11,13 +11,15 @@ import com.grupofive.demo.post.entities.Post;
 import com.grupofive.demo.post.exceptions.PostServiceException;
 import com.grupofive.demo.post.repositories.PostRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PostService {
 
     @Autowired
     private PostRepository repository;
     
-
+    @Transactional
     public void createPost(PostCreationDto post){
         if(post == null || post.getPostMessage().isBlank())
             throw new PostServiceException("Post Message is empty!");
@@ -40,6 +42,7 @@ public class PostService {
         }
     }
 
+    @Transactional
     public void updatePost(PostUpdateDto postUpdate){
         if(postUpdate.getChangeId() == null)
             throw new PostServiceException("Given id is null!");
@@ -54,11 +57,13 @@ public class PostService {
         post.setMessage(postUpdate.getChangeMessage());
         repository.save(post);
     }
-
+    
+    @Transactional
     public void deletePost(Long id){
         repository.deleteById(id);
     }
 
+    //Test only function
     public PostRepository getRepository(){
         return repository;
     }
