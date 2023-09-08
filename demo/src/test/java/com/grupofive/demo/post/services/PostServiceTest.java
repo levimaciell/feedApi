@@ -129,4 +129,34 @@ public class PostServiceTest {
         assertEquals("This is a message AFTER update", testPost2.getMessage());
     }
 
+    @Test
+    @DirtiesContext
+    void testDeletePost(){
+        //Checking if context is dirty
+        assertEquals(0L,tRepository.count(), "Context could be dirty. NumberOfPosts: " + tRepository.count());
+        
+        //Create a new post to db, and check if it is there
+        testService.createPost(new PostCreationDto("This is a message For deletion"));
+        Long count = tRepository.count();
+        assertEquals(1L,count, "There should be only one Post in db, but there is actually " + count);
+
+        //Check if it allows to delete with a null id
+        PostServiceException e = assertThrows(PostServiceException.class, () -> testService.deletePost(null));
+        assertEquals("Id is null", e.getMessage());
+
+        //Check if it throws a exception when post is not in db
+        e = assertThrows(PostServiceException.class,() -> testService.deletePost(222L));
+        assertEquals("Post not found for deletion", e.getMessage());
+
+        //Check if the post was really deleted from db
+        long postCount = tRepository.count();
+        assertEquals(1, postCount);
+        testService.deletePost(1L);
+        postCount = tRepository.count();
+        assertEquals(0, postCount);
+
+
+
+    }
+
 }

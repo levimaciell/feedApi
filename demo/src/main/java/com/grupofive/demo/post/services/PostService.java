@@ -60,6 +60,13 @@ public class PostService {
     
     @Transactional
     public void deletePost(Long id){
+
+        if(id == null)
+            throw new PostServiceException("Id is null");
+
+        if(!repository.existsById(id))
+            throw new PostServiceException("Post not found for deletion");
+
         repository.deleteById(id);
     }
 
