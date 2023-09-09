@@ -8,11 +8,15 @@ public class PostCreationDto {
     }
 
     public PostCreationDto(String postMessage) {
+
         this.postMessage = postMessage;
     }
 
     public String getPostMessage() {
+
         return postMessage;
     }
+
+
 
 }

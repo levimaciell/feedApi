@@ -1,7 +1,21 @@
 package com.grupofive.demo.post.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 public class PostServiceException extends RuntimeException{
-    public PostServiceException(String msg){
+
+    private HttpStatus code;
+    public PostServiceException(String msg, HttpStatus code){
+
         super(msg);
+        this.code = code;
+    }
+
+    public PostServiceException(String msg) {
+        super(msg);
+    }
+
+    public HttpStatus getCode() {
+        return code;
     }
 }
