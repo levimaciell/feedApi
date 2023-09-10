@@ -1,0 +1,4 @@
+CREATE TABLE tb_posts (
+    id INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    message TEXT NOT NULL
+)
