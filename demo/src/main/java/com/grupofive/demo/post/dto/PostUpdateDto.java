@@ -2,18 +2,18 @@ package com.grupofive.demo.post.dto;
 
 public class PostUpdateDto {
     
-    private Long changeId;
+    private String changeId;
     private String changeMessage;
     
     public PostUpdateDto() {
     }
 
-    public PostUpdateDto(Long changeId, String changeMessage) {
+    public PostUpdateDto(String changeId, String changeMessage) {
         this.changeId = changeId;
         this.changeMessage = changeMessage;
     }
 
-    public Long getChangeId() {
+    public String getChangeId() {
         return changeId;
     }
 

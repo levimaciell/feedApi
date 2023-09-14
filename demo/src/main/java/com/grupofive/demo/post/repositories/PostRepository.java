@@ -7,5 +7,8 @@ import com.grupofive.demo.post.entities.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long>{
-    
+
+    boolean existsById(String changeId);
+    Post getReferenceById(String changeId);
+    Post findById(String id);
 }

@@ -29,7 +29,7 @@ public class PostController {
     }
 
     @GetMapping(value = "/{id}")
-    public Post retrievePost(@PathVariable Long id){
+    public Post retrievePost(@PathVariable String id){
         return service.retrievePost(id);
     }
 

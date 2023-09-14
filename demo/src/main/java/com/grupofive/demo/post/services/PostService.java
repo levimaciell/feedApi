@@ -33,11 +33,12 @@ public class PostService {
         repository.save(postCreate);
     }
 
-    public Post retrievePost(Long id){
+    public Post retrievePost(String id){
         if(id == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
         try{
-            return repository.findById(id).get();
+            Post post = repository.findById(id);
+            return post;
         }
         catch(NoSuchElementException e){
             throw new PostServiceException("Post not found in database", HttpStatus.NOT_FOUND);
