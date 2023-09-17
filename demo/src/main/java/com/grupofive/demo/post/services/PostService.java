@@ -37,7 +37,7 @@ public class PostService {
         if(id == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
         try{
-            Post post = repository.findById(id);
+            Post post = repository.findById(id).get();
             return post;
         }
         catch(NoSuchElementException e){
@@ -62,7 +62,7 @@ public class PostService {
     }
     
     @Transactional
-    public void deletePost(Long id){
+    public void deletePost(String id){
 
         if(id == null)
             throw new PostServiceException("Id is null", HttpStatus.BAD_REQUEST);
