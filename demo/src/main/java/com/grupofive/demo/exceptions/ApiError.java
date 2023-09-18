@@ -1,4 +1,4 @@
-package com.grupofive.demo.post.exceptions;
+package com.grupofive.demo.exceptions;
 
 import java.time.LocalDateTime;
 import java.util.List;
