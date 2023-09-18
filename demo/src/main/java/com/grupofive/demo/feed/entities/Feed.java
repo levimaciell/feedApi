@@ -1,14 +1,19 @@
 package com.grupofive.demo.feed.entities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.grupofive.demo.post.entities.Post;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,18 +23,19 @@ public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedId;
-    
-    private Map<String, Post> posts;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Post> posts;
 
     public Feed() {
-        posts = new HashMap<>();
+        posts = new ArrayList<>();
     }
 
-    public Map<String, Post> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(Map<String, Post> posts) {
+    public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
 
