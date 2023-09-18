@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.grupofive.demo.feed.entities.Feed;
 
 @Repository
-public interface FeedRepository extends JpaRepository<Feed, Long>{
+public interface FeedRepository extends JpaRepository<Feed, String>{
     
 }

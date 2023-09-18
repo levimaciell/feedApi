@@ -21,16 +21,16 @@ public class FeedService {
         repository.save(new Feed());
     }
 
-    public Feed readPost(Long id){
+    public Feed readPost(String id){
         return repository.findById(id).get();
     }
 
-    public void updatePost(){
+    //Is it needed?
+    /*public void updatePost(){
 
-    }
+    }*/
 
-
-    public void deleteFeed(Long id){
+    public void deleteFeed(String id){
         repository.deleteById(id);
     }
 

@@ -18,8 +18,8 @@ import jakarta.persistence.Table;
 public class Feed {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long feedId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String feedId;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Post> posts;
@@ -36,13 +36,15 @@ public class Feed {
         this.posts = posts;
     }
 
-    public Long getFeedId() {
+    public String getFeedId() {
         return feedId;
     }
 
-    public void setFeedId(Long feedId) {
+    public void setFeedId(String feedId) {
         this.feedId = feedId;
     }
+
+    
 
     
 }

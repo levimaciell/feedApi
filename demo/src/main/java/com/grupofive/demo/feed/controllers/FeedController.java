@@ -26,12 +26,12 @@ public class FeedController {
     }
 
     @GetMapping(value = "/{id}")
-    public Feed retrieveFeed(@PathVariable Long id){
+    public Feed retrieveFeed(@PathVariable String id){
         return service.readPost(id);
     }
     
     @DeleteMapping(value = "/{id}")
-    public void deleteFeed(@PathVariable Long id){
+    public void deleteFeed(@PathVariable String id){
         service.deleteFeed(id);
     }
 
