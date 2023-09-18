@@ -1,9 +1,7 @@
 package com.grupofive.demo.feed.entities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.grupofive.demo.post.entities.Post;
 
@@ -13,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,6 +34,14 @@ public class Feed {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public Long getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(Long feedId) {
+        this.feedId = feedId;
     }
 
     

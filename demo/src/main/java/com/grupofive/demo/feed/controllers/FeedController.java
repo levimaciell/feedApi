@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.grupofive.demo.feed.entities.Feed;
 import com.grupofive.demo.feed.services.FeedService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -28,6 +30,9 @@ public class FeedController {
         return service.readPost(id);
     }
     
-
+    @DeleteMapping(value = "/{id}")
+    public void deleteFeed(@PathVariable Long id){
+        service.deleteFeed(id);
+    }
 
 }
