@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping(value = "/api/feeds")
@@ -23,6 +25,11 @@ public class FeedController {
     @PostMapping
     public void createFeed(){
         service.createFeed();
+    }
+
+    @GetMapping
+    public List<Feed> getAllFeeds() {
+        return service.getAllFeeds();
     }
 
     @GetMapping(value = "/{id}")

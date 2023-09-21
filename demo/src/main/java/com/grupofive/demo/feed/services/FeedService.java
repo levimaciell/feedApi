@@ -1,5 +1,6 @@
 package com.grupofive.demo.feed.services;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class FeedService {
-    
+
+
     @Autowired
     FeedRepository repository;
 
@@ -26,6 +28,11 @@ public class FeedService {
     @Transactional
     public void createFeed(){
         repository.save(new Feed());
+    }
+
+    public List<Feed> getAllFeeds() {
+        var listaFeeds = repository.findAll().stream().toList();
+        return listaFeeds;
     }
 
     public Feed readFeed(String id){
