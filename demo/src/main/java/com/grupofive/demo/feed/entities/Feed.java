@@ -5,7 +5,13 @@ import java.util.List;
 
 import com.grupofive.demo.post.entities.Post;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_feeds")
@@ -16,9 +22,6 @@ public class Feed {
     private String feedId;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "feeds_posts",
-                joinColumns = @JoinColumn(name = "feed_fk"),
-                inverseJoinColumns = @JoinColumn(name = "post_fk"))
     private List<Post> posts;
 
     public Feed() {
