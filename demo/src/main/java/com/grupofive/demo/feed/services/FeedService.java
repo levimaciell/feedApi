@@ -3,6 +3,8 @@ package com.grupofive.demo.feed.services;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.grupofive.demo.post.dto.PostCreationDto;
+import com.grupofive.demo.post.entities.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -72,4 +74,47 @@ public class FeedService {
         }
     }
 
+    public Feed addPostInFeed(String id, PostCreationDto post) {
+        Feed feed = repository.findById(id).get();
+
+//        service.createPost(post);
+
+        Post newPost = new Post();
+        newPost.setMessage(post.getPostMessage());
+
+        feed.addPostInFeedList(newPost);
+
+        service.createPost(post);
+
+        return feed;
+    }
+
+    // @Transactional
+   // public Feed addPostInFeed(Feed feedUpdate, PostCreationDto post) {
+       // if(feedUpdate.getFeedId() == null || feedUpdate.getFeedId().isBlank())
+     //       throw new FeedServiceException("Given id is either null or blank", HttpStatus.BAD_REQUEST);
+    //    Feed oldFeed = repository.findById(feedUpdate.getFeedId()).get();
+
+  //      service.createPost(post);
+
+//        Post newPost = new Post();
+//        newPost.setMessage(post.getPostMessage());
+
+  //      oldFeed.addPostInFeedList(newPost);
+
+//        PostCreationDto post = new PostCreationDto();
+//        post.setPostMessage(message);
+//        service.createPost(post);
+
+//        Post newPost = new Post();
+//        newPost.setMessage(post.getPostMessage());
+
+//        newPost.setMessage(post.getPostMessage());
+
+//        oldFeed.addPostInFeedList(newPost);
+
+ //       return oldFeed;
+
+
+   // }
 }

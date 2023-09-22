@@ -1,16 +1,12 @@
 package com.grupofive.demo.feed.controllers;
 
+import com.grupofive.demo.post.dto.PostCreationDto;
+import com.grupofive.demo.post.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.grupofive.demo.feed.entities.Feed;
 import com.grupofive.demo.feed.services.FeedService;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -22,6 +18,9 @@ public class FeedController {
     @Autowired
     FeedService service;
 
+    @Autowired
+    PostService servicePost;
+
     @PostMapping
     public void createFeed(){
         service.createFeed();
@@ -31,6 +30,14 @@ public class FeedController {
     public List<Feed> getAllFeeds() {
         return service.getAllFeeds();
     }
+
+    @PutMapping(value = "/{id}")
+    public Feed addPostInFeed(@PathVariable String id, @RequestBody PostCreationDto post) {
+        return service.addPostInFeed(id, post);
+    }
+    //public Feed addPostInFeed(@RequestBody Feed feedUpdate, @RequestBody PostCreationDto post) {
+  //      return service.addPostInFeed(feedUpdate, post);
+//    }
 
     @GetMapping(value = "/{id}")
     public Feed retrieveFeed(@PathVariable String id){
