@@ -3,6 +3,7 @@ package com.grupofive.demo.feed.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.grupofive.demo.post.dto.PostCreationDto;
 import com.grupofive.demo.post.entities.Post;
 
 import jakarta.persistence.*;
@@ -33,6 +34,10 @@ public class Feed {
         this.posts = posts;
     }
 
+    public void addPostInFeedList(Post post) {
+        this.posts.add(post);
+    }
+
     public String getFeedId() {
         return feedId;
     }
@@ -40,8 +45,6 @@ public class Feed {
     public void setFeedId(String feedId) {
         this.feedId = feedId;
     }
-
-    
 
     
 }
