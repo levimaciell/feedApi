@@ -15,6 +15,8 @@ import com.grupofive.demo.post.dto.PostUpdateDto;
 import com.grupofive.demo.post.entities.Post;
 import com.grupofive.demo.post.services.PostService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/posts")
 public class PostController {
@@ -31,6 +33,11 @@ public class PostController {
     @GetMapping(value = "/{id}")
     public Post retrievePost(@PathVariable String id){
         return service.retrievePost(id);
+    }
+
+    @GetMapping
+    public List<Post> getAllPosts() {
+        return service.getAllPosts();
     }
 
     @PutMapping

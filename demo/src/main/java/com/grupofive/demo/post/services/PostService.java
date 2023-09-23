@@ -1,5 +1,6 @@
 package com.grupofive.demo.post.services;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,16 @@ public class PostService {
     
     @Transactional
     public void createPost(PostCreationDto post){
-        if(post == null || post.getPostMessage().isBlank()) {
+        if(post == null || post.getPostTitle().isBlank()) {
+            throw new PostServiceException("Post title is empty!", HttpStatus.BAD_REQUEST);
+        }
+        if(post.getPostMessage().isBlank()) {
             throw new PostServiceException("Post Message is empty!", HttpStatus.BAD_REQUEST);
         }
 
         //Create empty post. Let spring take care of the id
         Post postCreate = new Post();
+        postCreate.setTitle(post.getPostTitle());
         postCreate.setMessage(post.getPostMessage());
 
         repository.save(postCreate);
@@ -53,10 +58,14 @@ public class PostService {
         if(!repository.existsById(postUpdate.getChangeId()))
             throw new PostServiceException("Post to update not found", HttpStatus.NOT_FOUND);
 
+        if(postUpdate.getChangeTitle() == null || postUpdate.getChangeTitle().isBlank())
+            throw new PostServiceException("New title to be changed is either null or empty", HttpStatus.BAD_REQUEST);
+
         if(postUpdate.getChangeMessage() == null || postUpdate.getChangeMessage().isBlank())
             throw new PostServiceException("New message to be changed is either null or empty", HttpStatus.BAD_REQUEST);
 
         Post post = repository.getReferenceById(postUpdate.getChangeId());
+        post.setTitle(postUpdate.getChangeTitle());
         post.setMessage(postUpdate.getChangeMessage());
         repository.save(post);
     }
@@ -73,5 +82,9 @@ public class PostService {
         repository.deleteById(id);
     }
 
-    
+    @Transactional
+    public List<Post> getAllPosts() {
+        var listPost = repository.findAll().stream().toList();
+        return listPost;
+    }
 }
