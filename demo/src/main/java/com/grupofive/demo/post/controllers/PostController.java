@@ -41,8 +41,8 @@ public class PostController {
     }
 
     @PutMapping
-    public void updatePost(@RequestBody PostUpdateDto postUpdate){
-        service.updatePost(postUpdate);
+    public Post updatePost(@RequestBody PostUpdateDto postUpdate){
+        return service.updatePost(postUpdate);
     }
 
     @DeleteMapping(value = "/{id}")

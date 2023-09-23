@@ -2,6 +2,7 @@ package com.grupofive.demo.post.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,7 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(PostUpdateDto postUpdate){
+    public Post updatePost(PostUpdateDto postUpdate){
         if(postUpdate.getChangeId() == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
         
@@ -64,10 +65,12 @@ public class PostService {
         if(postUpdate.getChangeMessage() == null || postUpdate.getChangeMessage().isBlank())
             throw new PostServiceException("New message to be changed is either null or empty", HttpStatus.BAD_REQUEST);
 
-        Post post = repository.getReferenceById(postUpdate.getChangeId());
+        Optional<Post> optionalPost = repository.findById(postUpdate.getChangeId());
+        Post post = optionalPost.get();
         post.setTitle(postUpdate.getChangeTitle());
         post.setMessage(postUpdate.getChangeMessage());
-        repository.save(post);
+//        repository.save(post);
+        return post;
     }
     
     @Transactional
