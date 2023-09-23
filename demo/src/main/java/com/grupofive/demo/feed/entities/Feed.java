@@ -3,7 +3,6 @@ package com.grupofive.demo.feed.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.grupofive.demo.post.dto.PostCreationDto;
 import com.grupofive.demo.post.entities.Post;
 
 import jakarta.persistence.*;

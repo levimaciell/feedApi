@@ -3,6 +3,7 @@ package com.grupofive.demo.post.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grupofive.demo.feed.entities.Feed;
 
 import jakarta.persistence.Column;
@@ -24,6 +25,7 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "posts")
     List<Feed> feeds;
 
