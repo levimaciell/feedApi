@@ -16,14 +16,18 @@ public class Post {
     private String id;
 
     @Column(columnDefinition = "TEXT")
+    private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String message;
 
     public Post(){
 
     }
 
-    public Post(String id, String message){
+    public Post(String id, String title,String message){
         this.id = id;
+        this.title = title;
         this.message = message;
     }
 
@@ -33,6 +37,14 @@ public class Post {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getMessage() {
