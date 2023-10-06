@@ -12,6 +12,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    private String commentId;
     private String postId;
     private String comment;
     
