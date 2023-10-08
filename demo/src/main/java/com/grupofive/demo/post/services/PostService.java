@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.grupofive.demo.post.dto.PostCreationDto;
-import com.grupofive.demo.post.dto.PostUpdateDto;
+import com.grupofive.demo.post.dto.PostDto.PostCreationDto;
+import com.grupofive.demo.post.dto.PostDto.PostUpdateDto;
 import com.grupofive.demo.post.entities.Post;
 import com.grupofive.demo.post.exceptions.PostServiceException;
 import com.grupofive.demo.post.repositories.PostRepository;

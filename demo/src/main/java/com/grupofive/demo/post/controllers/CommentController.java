@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.grupofive.demo.post.dto.PostCommentDto;
-import com.grupofive.demo.post.dto.PostCommentUpdateDto;
+import com.grupofive.demo.post.dto.CommentDto.PostCommentDto;
+import com.grupofive.demo.post.dto.CommentDto.PostCommentUpdateDto;
 import com.grupofive.demo.post.entities.Comment;
 import com.grupofive.demo.post.services.CommentService;
 
@@ -31,12 +31,12 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<PostCommentDto> retrieveAllComments(){
+    public List<Comment> retrieveAllComments(){
         return service.retrieveAllComments();
     }
     
     @GetMapping("/{id}")
-    public PostCommentDto retrieveComments(@PathVariable String id){
+    public Comment retrieveComments(@PathVariable String id){
         return service.retrieveComment(id);
     }
 

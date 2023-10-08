@@ -24,6 +24,13 @@ public class Comment {
         this.comment = comment;
     }
 
+
+    public Comment(String commentId, String postId, String comment) {
+        this.commentId = commentId;
+        this.postId = postId;
+        this.comment = comment;
+    }
+
     public String getPostId() {
         return postId;
     }
@@ -38,6 +45,14 @@ public class Comment {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 
     

@@ -3,8 +3,8 @@ package com.grupofive.demo.post.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.grupofive.demo.post.dto.PostCreationDto;
-import com.grupofive.demo.post.dto.PostUpdateDto;
+import com.grupofive.demo.post.dto.PostDto.PostCreationDto;
+import com.grupofive.demo.post.dto.PostDto.PostUpdateDto;
 import com.grupofive.demo.post.entities.Post;
 import com.grupofive.demo.post.services.PostService;
 
