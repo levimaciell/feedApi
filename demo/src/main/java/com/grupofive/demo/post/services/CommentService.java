@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.grupofive.demo.post.dto.CommentDto.PostCommentDto;
 import com.grupofive.demo.post.dto.CommentDto.PostCommentUpdateDto;
 import com.grupofive.demo.post.entities.Comment;
+import com.grupofive.demo.post.entities.Post;
 import com.grupofive.demo.post.exceptions.CommentServiceException;
 import com.grupofive.demo.post.repositories.CommentRepository;
 
@@ -20,6 +21,9 @@ public class CommentService {
     @Autowired
     private CommentRepository repository;
 
+    @Autowired
+    private PostService postService;
+
     @Transactional
     public void createComment(PostCommentDto comment){
 
@@ -30,7 +34,9 @@ public class CommentService {
             throw new CommentServiceException("The comment is blank", HttpStatus.BAD_REQUEST);
         }
 
-        Comment addComment = new Comment(comment.getPostID(), comment.getComment());
+        Post post = postService.retrievePost(comment.getPostID());
+
+        Comment addComment = new Comment(comment.getComment(), post);
         repository.save(addComment);
 
     }
@@ -46,6 +52,8 @@ public class CommentService {
     }
 
     public List<Comment> retrieveAllComments(){
+
+        //TODO: retrive all comments that have a same postId, which means find all of one post
         return repository.findAll();
     }
 

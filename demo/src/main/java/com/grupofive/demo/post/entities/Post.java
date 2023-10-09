@@ -1,10 +1,14 @@
 package com.grupofive.demo.post.entities;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,6 +21,11 @@ public class Post {
 
     @Column(columnDefinition = "TEXT")
     private String message;
+
+    //Many comments to one post. One post to many comments. One to Many!
+    //De post chego em comentário, mas de comentário chego em post?
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     public Post(){
 
