@@ -1,10 +1,16 @@
 package com.grupofive.demo.post.entities;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,6 +23,12 @@ public class Post {
 
     @Column(columnDefinition = "TEXT")
     private String message;
+
+    //Many comments to one post. One post to many comments. One to Many!
+    //De post chego em comentário, mas de comentário chego em post?
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Comment> comments;
 
     public Post(){
 
@@ -42,4 +54,14 @@ public class Post {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    
 }

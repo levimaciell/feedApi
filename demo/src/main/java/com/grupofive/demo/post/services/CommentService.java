@@ -3,54 +3,81 @@ package com.grupofive.demo.post.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.grupofive.demo.post.dto.PostCommentDto;
-import com.grupofive.demo.post.dto.PostCommentUpdateDto;
+import com.grupofive.demo.post.dto.CommentDto.PostCommentDto;
+import com.grupofive.demo.post.dto.CommentDto.PostCommentUpdateDto;
 import com.grupofive.demo.post.entities.Comment;
+import com.grupofive.demo.post.entities.Post;
+import com.grupofive.demo.post.exceptions.CommentServiceException;
 import com.grupofive.demo.post.repositories.CommentRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class CommentService {
-    //TODO: Check the idea of having a map, to hide the real id in the database of frontend
 
     @Autowired
     private CommentRepository repository;
 
+    @Autowired
+    private PostService postService;
+
     @Transactional
     public void createComment(PostCommentDto comment){
 
-        //TODO:Check for errors
-        Comment addComment = new Comment(comment.getPostID(), comment.getComment());
+        if(comment == null || comment.getPostID().isBlank()) {
+            throw new CommentServiceException("PostID is not informed", HttpStatus.BAD_REQUEST);
+        }
+        if(comment.getComment().isBlank()) {
+            throw new CommentServiceException("The comment is blank", HttpStatus.BAD_REQUEST);
+        }
+
+        Post post = postService.retrievePost(comment.getPostID());
+
+        Comment addComment = new Comment(comment.getComment(), post);
         repository.save(addComment);
 
     }
 
-    public PostCommentDto retrieveComment(String commentId){
-        //TODO:Check for errors
+    public Comment retrieveComment(String commentId){
 
-        Comment comment = repository.findById(commentId).get();
-        return new PostCommentDto(comment.getPostId(), comment.getComment());
+        if(commentId == null || commentId.isBlank())
+            throw new CommentServiceException("The commentId is not informed", HttpStatus.BAD_REQUEST);
+
+        return repository.findById(commentId).orElseThrow(() -> 
+        new CommentServiceException("Comment not found", HttpStatus.NOT_FOUND));
+
     }
 
-    public List<PostCommentDto> retrieveAllComments(){
-
-        //TODO:Check for errors
-        //TODO:Include id in db for proper deletion
-        return repository.findAll().stream().map((x)-> new PostCommentDto(x.getPostId(), x.getComment())).toList();
+    public List<Comment> retrieveAllComments(){
+        return repository.findAll();
     }
 
+    @Transactional
     public void deleteComment(String commentId){
-        //TODO:Check for errors
-        repository.deleteById(commentId);
+
+        if(commentId == null || commentId.isBlank())
+            throw new CommentServiceException("The commentId is not informed", HttpStatus.BAD_REQUEST);
+
+        if(repository.existsById(commentId))
+            repository.deleteById(commentId);
+        else
+            throw new CommentServiceException("Comment not found", HttpStatus.NOT_FOUND);
         
     }
-    public Comment updateComment(PostCommentUpdateDto update){
-        //TODO:Check for errors
 
-        Comment comment = repository.findById(update.getCommentId()).get();
+    @Transactional
+    public Comment updateComment(PostCommentUpdateDto update){
+
+        if(update == null) throw new CommentServiceException("Update info is null!", HttpStatus.BAD_REQUEST);
+        if(update.getCommentId().isBlank()) throw new CommentServiceException("The comment id is blank!", HttpStatus.BAD_REQUEST);
+        if(update.getMessage().isBlank()) throw new CommentServiceException("The message is blank!", HttpStatus.BAD_REQUEST);
+
+        Comment comment = repository.findById(update.getCommentId()).orElseThrow(()->
+        new CommentServiceException("The comment was not found", HttpStatus.NOT_FOUND));
+
         comment.setComment(update.getMessage());
         repository.save(comment);
         return comment;

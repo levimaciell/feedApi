@@ -1,4 +1,4 @@
-package com.grupofive.demo.post.dto;
+package com.grupofive.demo.post.dto.CommentDto;
 
 public class PostCommentUpdateDto {
     

@@ -1,9 +1,13 @@
 package com.grupofive.demo.post.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,24 +16,29 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String commentId;
-    private String postId;
-    private String comment;
     
+    private String commentId;
+    private String comment;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+    @JsonBackReference
+    private Post post;
+
     public Comment() {
     }
 
-    public Comment(String postId, String comment) {
-        this.postId = postId;
+    public Comment(String comment, Post post) {
+        this.post= post;
         this.comment = comment;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getCommentId() {
+        return commentId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 
     public String getComment() {
@@ -40,6 +49,12 @@ public class Comment {
         this.comment = comment;
     }
 
-    
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
 
 }
