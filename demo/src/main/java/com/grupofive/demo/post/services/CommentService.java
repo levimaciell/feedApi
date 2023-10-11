@@ -52,8 +52,6 @@ public class CommentService {
     }
 
     public List<Comment> retrieveAllComments(){
-
-        //TODO: retrive all comments that have a same postId, which means find all of one post
         return repository.findAll();
     }
 
