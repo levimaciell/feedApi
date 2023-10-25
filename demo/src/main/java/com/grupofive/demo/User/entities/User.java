@@ -1,4 +1,4 @@
-package com.grupofive.demo.User.entity;
+package com.grupofive.demo.User.entities;
 
 import com.grupofive.demo.User.enums.UserRole;
 import jakarta.persistence.*;

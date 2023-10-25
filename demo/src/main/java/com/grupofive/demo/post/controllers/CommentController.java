@@ -18,7 +18,7 @@ import com.grupofive.demo.post.dto.CommentDto.PostCommentUpdateDto;
 import com.grupofive.demo.post.entities.Comment;
 import com.grupofive.demo.post.services.CommentService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/posts/comments")
 public class CommentController {
