@@ -12,14 +12,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import com.grupofive.demo.security.filter.SecurityFilter;
 
 @Configuration //Essa anotação indica ao spring que esta é uma classe de configuração
 @EnableWebSecurity //Essa anotação diz ao spring security para usar a configuração web desta classe
 public class SecurityConfigurations {
-
+    @Autowired
+    private SecurityFilter securityFilter;
     
     //Serve para dizer ao spring para carregar essa classe e fazer a injeção de dependencia
     //Esse método terá um conjunto de outros métodos que fará o filtro de segurança da minha requisição
@@ -34,6 +36,7 @@ public class SecurityConfigurations {
             .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll() //permitindo não autenticação do console h2
             .anyRequest().authenticated() //Diz que qualquer requisição da minha api deve ser autenticada. 
         )//Quais requisições http devem ser autorizadas
+        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
         
     }

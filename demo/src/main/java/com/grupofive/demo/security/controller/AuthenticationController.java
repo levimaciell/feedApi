@@ -14,7 +14,9 @@ import com.grupofive.demo.User.dto.UserRegisterDto;
 import com.grupofive.demo.User.entities.User;
 import com.grupofive.demo.User.enums.UserRole;
 import com.grupofive.demo.User.repositories.UserRepository;
+import com.grupofive.demo.security.TokenService;
 import com.grupofive.demo.security.dto.AuthenticationDto;
+import com.grupofive.demo.security.dto.LoginResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -27,7 +29,8 @@ public class AuthenticationController {
     private AuthenticationManager authManager;
     @Autowired
     private UserRepository repository;
-
+    @Autowired
+    private TokenService service;
     
     //Endpoint de login. Onde será feita a requisição
     @PostMapping(value = "/login")
@@ -35,7 +38,9 @@ public class AuthenticationController {
         var userNamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.senha()); //O authenticationService vai mostrar ao spring como buscar essas infomações no bd. Isso gera um token
         var auth = authManager.authenticate(userNamePassword); //O authManager do próprio spring irá autenticar o usuário
 
-        return ResponseEntity.ok().build();
+        var token = service.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDto(token));
     }
 
     @PostMapping(value ="/register")
