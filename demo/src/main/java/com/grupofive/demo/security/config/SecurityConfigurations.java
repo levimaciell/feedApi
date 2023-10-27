@@ -1,5 +1,7 @@
 package com.grupofive.demo.security.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
 
 import com.grupofive.demo.security.filter.SecurityFilter;
 
@@ -27,8 +35,9 @@ public class SecurityConfigurations {
     //Esse método terá um conjunto de outros métodos que fará o filtro de segurança da minha requisição
     @Bean 
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)throws Exception{
+
         return httpSecurity
-        .csrf(csrf -> csrf.disable())//Desativa o csrf(assumo que não seja ideal em prod) 
+        .cors(withDefaults()).csrf(csrf -> csrf.disable())//Desativa o csrf(assumo que não seja ideal em prod) 
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//Autenticação stateless ao invés de statefull, onde o usuário é validado e recebe um token, e fica a cargo da api de validar se esse token foi criado pela api ou não
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(new AntPathRequestMatcher("/auth/register", HttpMethod.POST.name())).permitAll() //permitindo não autenticação ao criar user
@@ -51,4 +60,17 @@ public class SecurityConfigurations {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+    
+
+    @Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("*"));
+		configuration.setAllowedMethods(Arrays.asList("HEAD",
+        "GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }
