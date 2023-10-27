@@ -1,4 +1,4 @@
-package com.grupofive.demo.security.config;
+package com.grupofive.demo.security_auth.config;
 
 import java.util.Arrays;
 
@@ -20,10 +20,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.grupofive.demo.security_auth.filter.SecurityFilter;
+
 import static org.springframework.security.config.Customizer.withDefaults;
-
-
-import com.grupofive.demo.security.filter.SecurityFilter;
 
 @Configuration //Essa anotação indica ao spring que esta é uma classe de configuração
 @EnableWebSecurity //Essa anotação diz ao spring security para usar a configuração web desta classe

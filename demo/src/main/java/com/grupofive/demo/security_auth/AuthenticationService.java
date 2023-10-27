@@ -1,4 +1,4 @@
-package com.grupofive.demo.security;
+package com.grupofive.demo.security_auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,5 +19,6 @@ public class AuthenticationService implements UserDetailsService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByLogin(username);
     }
+    
     
 }

@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.grupofive.demo.security_auth.LoginRegisterException;
+
 import java.util.List;
 
 @RestControllerAdvice
@@ -24,4 +26,9 @@ public class Handler {
         return new ResponseEntity<ApiError>(response, exception.getCode());
     }
 
+    @ExceptionHandler(LoginRegisterException.class)
+    public ResponseEntity<ApiError> loginRegisterException(LoginRegisterException exception){
+        ApiError response = new ApiError(exception.getCode(), List.of(exception.getMessage()));
+        return new ResponseEntity<ApiError>(response, exception.getCode());
+    }
 }

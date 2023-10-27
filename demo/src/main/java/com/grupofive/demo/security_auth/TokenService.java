@@ -1,4 +1,4 @@
-package com.grupofive.demo.security;
+package com.grupofive.demo.security_auth;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
