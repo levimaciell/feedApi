@@ -1,6 +1,7 @@
 package com.grupofive.demo.post.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.grupofive.demo.User.entities.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +22,13 @@ public class Comment {
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "post_id")
     @JsonBackReference
     private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Comment() {
     }

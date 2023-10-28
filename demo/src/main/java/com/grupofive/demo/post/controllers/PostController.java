@@ -20,8 +20,11 @@ public class PostController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping
-    public void createPost(@RequestBody PostCreationDto post){
-        service.createPost(post);
+    public void createPost(@RequestBody PostCreationDto post, @RequestHeader("Authorization") String header){
+
+        String token = header.replace("Bearer ", "");
+        
+        service.createPost(post, token);
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

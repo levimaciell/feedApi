@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.grupofive.demo.security_auth.LoginRegisterException;
+import com.grupofive.demo.security_auth.TokenServiceException;
 
 import java.util.List;
 
@@ -28,6 +29,12 @@ public class Handler {
 
     @ExceptionHandler(LoginRegisterException.class)
     public ResponseEntity<ApiError> loginRegisterException(LoginRegisterException exception){
+        ApiError response = new ApiError(exception.getCode(), List.of(exception.getMessage()));
+        return new ResponseEntity<ApiError>(response, exception.getCode());
+    }
+
+    @ExceptionHandler(TokenServiceException.class)
+    public ResponseEntity<ApiError> tokenServiceException(TokenServiceException exception){
         ApiError response = new ApiError(exception.getCode(), List.of(exception.getMessage()));
         return new ResponseEntity<ApiError>(response, exception.getCode());
     }

@@ -44,6 +44,7 @@ public class SecurityConfigurations {
             .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll() //permitindo não autenticação do console h2
             .anyRequest().authenticated() //Diz que qualquer requisição da minha api deve ser autenticada. 
         )//Quais requisições http devem ser autorizadas
+        .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
         

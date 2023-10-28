@@ -1,6 +1,7 @@
 package com.grupofive.demo.post.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,11 +47,14 @@ public class CommentService {
         if(commentId == null || commentId.isBlank())
             throw new CommentServiceException("The commentId is not informed", HttpStatus.BAD_REQUEST);
 
-        return repository.findById(commentId).orElseThrow(() -> 
-        new CommentServiceException("Comment not found", HttpStatus.NOT_FOUND));
+        Optional<Comment> comment = repository.findById(commentId);
 
+        if(comment.isEmpty()){
+            throw new CommentServiceException("Comment not found", HttpStatus.NOT_FOUND);
+        }
+
+        return comment.get();
     }
-
     public List<Comment> retrieveAllComments(){
         return repository.findAll();
     }
@@ -75,9 +79,12 @@ public class CommentService {
         if(update.getCommentId().isBlank()) throw new CommentServiceException("The comment id is blank!", HttpStatus.BAD_REQUEST);
         if(update.getMessage().isBlank()) throw new CommentServiceException("The message is blank!", HttpStatus.BAD_REQUEST);
 
-        Comment comment = repository.findById(update.getCommentId()).orElseThrow(()->
-        new CommentServiceException("The comment was not found", HttpStatus.NOT_FOUND));
+        Optional<Comment> commentOpt = repository.findById(update.getCommentId());
+        
+        if(commentOpt.isEmpty())
+            throw new CommentServiceException("The comment was not found", HttpStatus.NOT_FOUND);
 
+        Comment comment = commentOpt.get();
         comment.setComment(update.getMessage());
         repository.save(comment);
         return comment;

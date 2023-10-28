@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -31,7 +32,7 @@ public class TokenService {
             return token;
         } 
         catch (JWTCreationException e) {
-            throw new RuntimeException("Error while generating token", e);
+            throw new TokenServiceException("Error while generating token", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -46,7 +47,7 @@ public class TokenService {
 
         }
         catch(JWTVerificationException e){
-            throw new RuntimeException("Error while validating token", e);
+            throw new TokenServiceException("Error while validating token", HttpStatus.UNAUTHORIZED);
         }
     }
 
