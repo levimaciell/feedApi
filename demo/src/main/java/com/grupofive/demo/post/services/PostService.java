@@ -81,13 +81,7 @@ public class PostService {
 
         try{
             //Verificar se token é válido
-            String subject = service.validateToken(token);
-
-            //Verificar se usuário existe
-            User user = userRepository.findByUsername(subject);
-            if(user == null){
-                throw new PostServiceException("Subject not found", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            service.validateToken(token);
         }
         catch(JWTCreationException e){
             throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
@@ -115,13 +109,7 @@ public class PostService {
 
         try{
             //Verificar se token é válido
-            String subject = service.validateToken(token);
-
-            //Verificar se usuário existe
-            User user = userRepository.findByUsername(subject);
-            if(user == null){
-                throw new PostServiceException("Subject not found", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            service.validateToken(token);
         }
         catch(JWTCreationException e){
             throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
