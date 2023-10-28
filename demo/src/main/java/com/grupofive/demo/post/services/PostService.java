@@ -39,9 +39,10 @@ public class PostService {
             String subject = service.validateToken(token);
 
             //Verificar se usuário existe
+            //TODO: É necessário isso?
             User user = userRepository.findByUsername(subject);
             if(user == null){
-                throw new PostServiceException("User not found", HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new PostServiceException("Subject not found", HttpStatus.INTERNAL_SERVER_ERROR);
             }
             if(post.getPostMessage().isBlank()) {
                 throw new PostServiceException("Post Message is empty!", HttpStatus.BAD_REQUEST);
@@ -64,7 +65,9 @@ public class PostService {
     public Post retrievePost(String id){
         if(id == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
+
         try{
+            
             Post post = repository.findById(id).get();
             return post;
         }
@@ -74,7 +77,23 @@ public class PostService {
     }
 
     @Transactional
-    public Post updatePost(PostUpdateDto postUpdate){
+    public Post updatePost(PostUpdateDto postUpdate, String token){
+
+        try{
+            //Verificar se token é válido
+            String subject = service.validateToken(token);
+
+            //Verificar se usuário existe
+            User user = userRepository.findByUsername(subject);
+            if(user == null){
+                throw new PostServiceException("Subject not found", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        catch(JWTCreationException e){
+            throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+
+
         if(postUpdate.getChangeId() == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
         
@@ -92,7 +111,21 @@ public class PostService {
     }
     
     @Transactional
-    public void deletePost(String id){
+    public void deletePost(String id, String token){
+
+        try{
+            //Verificar se token é válido
+            String subject = service.validateToken(token);
+
+            //Verificar se usuário existe
+            User user = userRepository.findByUsername(subject);
+            if(user == null){
+                throw new PostServiceException("Subject not found", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        catch(JWTCreationException e){
+            throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
 
         if(id == null)
             throw new PostServiceException("Id is null", HttpStatus.BAD_REQUEST);

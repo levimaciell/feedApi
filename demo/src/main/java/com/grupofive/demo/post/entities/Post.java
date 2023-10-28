@@ -2,6 +2,7 @@ package com.grupofive.demo.post.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.grupofive.demo.User.entities.User;
 
@@ -35,6 +36,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
     
     public Post(){
