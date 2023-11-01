@@ -35,7 +35,6 @@ public class LoginAndRegisterService {
             var auth = authManager.authenticate(userNamePassword); //O authManager do próprio spring irá autenticar o usuário
 
             var token = service.generateToken((User) auth.getPrincipal());
-
             return new LoginResponseDto(dto.login(), token);
         }
         catch(BadCredentialsException e){

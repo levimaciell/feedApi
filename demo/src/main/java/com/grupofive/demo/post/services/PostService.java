@@ -8,15 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.grupofive.demo.User.entities.User;
-import com.grupofive.demo.User.repositories.UserRepository;
 import com.grupofive.demo.post.dto.PostDto.PostCreationDto;
 import com.grupofive.demo.post.dto.PostDto.PostUpdateDto;
 import com.grupofive.demo.post.entities.Post;
 import com.grupofive.demo.post.exceptions.PostServiceException;
 import com.grupofive.demo.post.repositories.PostRepository;
-import com.grupofive.demo.security_auth.TokenService;
 
 import jakarta.transaction.Transactional;
 
@@ -25,41 +21,18 @@ public class PostService {
 
     @Autowired
     private PostRepository repository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TokenService service;
     
     @Transactional
-    public void createPost(PostCreationDto post, String token){
-
-        try{
-            
-            //Verificar se token é válido
-            String subject = service.validateToken(token);
-
-            //Verificar se usuário existe
-            //TODO: É necessário isso?
-            User user = userRepository.findByUsername(subject);
-            if(user == null){
-                throw new PostServiceException("Subject not found", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            if(post.getPostMessage().isBlank()) {
-                throw new PostServiceException("Post Message is empty!", HttpStatus.BAD_REQUEST);
-            }
-
-            //Create empty post. Let spring take care of the id
-            Post postCreate = new Post();
-            postCreate.setMessage(post.getPostMessage());
-            postCreate.setUser(user);
-
-            repository.save(postCreate);
-        }
-        catch(JWTCreationException e){
-            throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    public void createPost(PostCreationDto post){
+        if(post.getPostMessage().isBlank()) {
+            throw new PostServiceException("Post Message is empty!", HttpStatus.BAD_REQUEST);
         }
 
-        
+        //Create empty post. Let spring take care of the id
+        Post postCreate = new Post();
+        postCreate.setMessage(post.getPostMessage());
+
+        repository.save(postCreate);
     }
 
     public Post retrievePost(String id){
@@ -77,16 +50,7 @@ public class PostService {
     }
 
     @Transactional
-    public Post updatePost(PostUpdateDto postUpdate, String token){
-
-        try{
-            //Verificar se token é válido
-            service.validateToken(token);
-        }
-        catch(JWTCreationException e){
-            throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
-
+    public Post updatePost(PostUpdateDto postUpdate){
 
         if(postUpdate.getChangeId() == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
@@ -105,15 +69,7 @@ public class PostService {
     }
     
     @Transactional
-    public void deletePost(String id, String token){
-
-        try{
-            //Verificar se token é válido
-            service.validateToken(token);
-        }
-        catch(JWTCreationException e){
-            throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
+    public void deletePost(String id){
 
         if(id == null)
             throw new PostServiceException("Id is null", HttpStatus.BAD_REQUEST);

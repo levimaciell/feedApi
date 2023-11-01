@@ -20,11 +20,8 @@ public class PostController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping
-    public void createPost(@RequestBody PostCreationDto post, @RequestHeader("Authorization") String header){
-
-        String token = header.replace("Bearer ", "");
-        
-        service.createPost(post, token);
+    public void createPost(@RequestBody PostCreationDto post){
+        service.createPost(post);
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -42,20 +39,16 @@ public class PostController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PutMapping
-    public Post updatePost(@RequestBody PostUpdateDto postUpdate, @RequestHeader("Authorization") String header){
+    public Post updatePost(@RequestBody PostUpdateDto postUpdate){
 
-        String token = header.replace("Bearer ", "");
-
-        return service.updatePost(postUpdate, token);
+        return service.updatePost(postUpdate);
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @DeleteMapping(value = "/{id}")
-    public void deletePost(@PathVariable String id, @RequestHeader("Authorization") String header){
+    public void deletePost(@PathVariable String id){
 
-        String token = header.replace("Bearer ", "");
-
-        service.deletePost(id, token);
+        service.deletePost(id);
     }
 
 }

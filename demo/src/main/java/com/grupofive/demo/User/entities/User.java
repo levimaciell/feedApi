@@ -1,10 +1,6 @@
 package com.grupofive.demo.User.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.grupofive.demo.User.enums.UserRole;
-import com.grupofive.demo.post.entities.Comment;
-import com.grupofive.demo.post.entities.Post;
-
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-@Table(name = "tb_users")
+@Table(name = "users")
 @Entity(name = "users")
 public class User implements UserDetails { // A classe UserDetails vêm de Spring security e é usada para identificar uma classe
     // que represente um usuário que será autenticado na aplicação
@@ -23,17 +19,8 @@ public class User implements UserDetails { // A classe UserDetails vêm de Sprin
     private String id;
     private String login;
     private String password;
-
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Post> posts;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Comment> comments;
 
     public User(String id, String login, String password, UserRole role) {
         this.id = id;

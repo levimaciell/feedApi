@@ -43,14 +43,6 @@ public class Post {
 
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Post(String id, String message){
         this.id = id;
         this.message = message;
