@@ -24,22 +24,22 @@ public class CommentService {
     @Autowired
     private PostService postService;
 
-    // @Transactional
-    // public void createComment(PostCommentDto comment){
+    @Transactional
+    public void createComment(PostCommentDto comment){
 
-    //     if(comment == null || comment.getPostID().isBlank()) {
-    //         throw new CommentServiceException("PostID is not informed", HttpStatus.BAD_REQUEST);
-    //     }
-    //     if(comment.getComment().isBlank()) {
-    //         throw new CommentServiceException("The comment is blank", HttpStatus.BAD_REQUEST);
-    //     }
+        if(comment == null || comment.getPostID().isBlank()) {
+            throw new CommentServiceException("PostID is not informed", HttpStatus.BAD_REQUEST);
+        }
+        if(comment.getComment().isBlank()) {
+            throw new CommentServiceException("The comment is blank", HttpStatus.BAD_REQUEST);
+        }
 
-    //     Post post = postService.retrievePost(comment.getPostID());
+        Post post = postService.retrievePost(comment.getPostID());
 
-    //     Comment addComment = new Comment(comment.getComment(), post);
-    //     repository.save(addComment);
+        Comment addComment = new Comment(comment.getComment(), post);
+        repository.save(addComment);
 
-    // }
+    }
 
     public Comment retrieveComment(String commentId){
 

@@ -50,7 +50,22 @@ public class PostService {
     }
 
     @Transactional
-    public Post updatePost(PostUpdateDto postUpdate){
+    public Post updatePost(PostUpdateDto postUpdate, String token){
+
+        try{
+            //Verificar se token é válido
+            String subject = service.validateToken(token);
+
+            //Verificar se usuário existe
+            User user = userRepository.findByUsername(subject);
+            if(user == null){
+                throw new PostServiceException("Subject not found", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        catch(JWTCreationException e){
+            throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+
 
         if(postUpdate.getChangeId() == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
@@ -69,7 +84,21 @@ public class PostService {
     }
     
     @Transactional
-    public void deletePost(String id){
+    public void deletePost(String id, String token){
+
+        try{
+            //Verificar se token é válido
+            String subject = service.validateToken(token);
+
+            //Verificar se usuário existe
+            User user = userRepository.findByUsername(subject);
+            if(user == null){
+                throw new PostServiceException("Subject not found", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        catch(JWTCreationException e){
+            throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
 
         if(id == null)
             throw new PostServiceException("Id is null", HttpStatus.BAD_REQUEST);

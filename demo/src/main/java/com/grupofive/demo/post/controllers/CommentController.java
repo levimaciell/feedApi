@@ -26,10 +26,10 @@ public class CommentController {
     @Autowired
     private CommentService service;
 
-    // @PostMapping
-    // public void createComment(@RequestBody PostCommentDto comment){
-    //     service.createComment(comment);
-    // }
+    @PostMapping
+    public void createComment(@RequestBody PostCommentDto comment){
+        service.createComment(comment);
+    }
 
     @GetMapping
     public List<Comment> retrieveAllComments(){
