@@ -1,10 +1,8 @@
 package com.grupofive.demo.post.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.grupofive.demo.Views;
 import com.grupofive.demo.User.entities.User;
 
 import jakarta.persistence.Entity;
@@ -17,17 +15,19 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_Comments")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "commentId")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    
+    @JsonView(Views.Public.class)
     private String commentId;
+
+    @JsonView(Views.Public.class)
     private String comment;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonView(Views.Public.class)
     private User user;
 
     @ManyToOne

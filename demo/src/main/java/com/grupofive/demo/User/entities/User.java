@@ -1,9 +1,8 @@
 package com.grupofive.demo.User.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.grupofive.demo.Views;
 import com.grupofive.demo.User.enums.UserRole;
 import com.grupofive.demo.post.entities.Comment;
 import com.grupofive.demo.post.entities.Post;
@@ -19,13 +18,16 @@ import java.util.Objects;
 
 @Table(name = "tb_users")
 @Entity(name = "users")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User implements UserDetails { // A classe UserDetails vêm de Spring security e é usada para identificar uma classe
     // que represente um usuário que será autenticado na aplicação
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JsonView(Views.Public.class)
     private String id;
+
+    @JsonView(Views.Public.class)
     private String login;
+
     private String password;
 
     @Enumerated(EnumType.STRING)

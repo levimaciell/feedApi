@@ -3,6 +3,8 @@ package com.grupofive.demo.post.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.grupofive.demo.Views;
 import com.grupofive.demo.post.dto.PostDto.PostCreationDto;
 import com.grupofive.demo.post.dto.PostDto.PostUpdateDto;
 import com.grupofive.demo.post.entities.Post;
@@ -36,6 +38,7 @@ public class PostController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping
+    @JsonView(Views.Public.class)
     public List<Post> getAllPosts() {
         return service.getAllPosts();
     }
