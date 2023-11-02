@@ -1,6 +1,13 @@
 package com.grupofive.demo.User.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.grupofive.demo.User.enums.UserRole;
+import com.grupofive.demo.post.entities.Comment;
+import com.grupofive.demo.post.entities.Post;
+
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,8 +17,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-@Table(name = "users")
+@Table(name = "tb_users")
 @Entity(name = "users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User implements UserDetails { // A classe UserDetails vêm de Spring security e é usada para identificar uma classe
     // que represente um usuário que será autenticado na aplicação
     @Id
@@ -19,8 +27,18 @@ public class User implements UserDetails { // A classe UserDetails vêm de Sprin
     private String id;
     private String login;
     private String password;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Post> posts; 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    //@JsonIgnore
+    //@JsonManagedReference
+    private List<Comment> comments;
 
     public User(String id, String login, String password, UserRole role) {
         this.id = id;
@@ -38,36 +56,43 @@ public class User implements UserDetails { // A classe UserDetails vêm de Sprin
     public User() {
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return login;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
@@ -93,6 +118,7 @@ public class User implements UserDetails { // A classe UserDetails vêm de Sprin
         this.password = password;
     }
 
+    @JsonIgnore
     public UserRole getRole() {
         return role;
     }

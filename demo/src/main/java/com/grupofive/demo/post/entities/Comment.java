@@ -1,6 +1,11 @@
 package com.grupofive.demo.post.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.grupofive.demo.User.entities.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_Comments")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "commentId")
 public class Comment {
 
     @Id
@@ -21,8 +27,12 @@ public class Comment {
     private String comment;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "id")
-    @JsonBackReference
+    @JsonIgnore
     private Post post;
 
     public Comment() {
@@ -57,4 +67,11 @@ public class Comment {
         this.post = post;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -3,6 +3,7 @@ package com.grupofive.demo.post.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.grupofive.demo.User.entities.User;
 
@@ -28,16 +29,15 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     //Many comments to one post. One post to many comments. One to Many!
     //De post chego em comentário, mas de comentário chego em post?
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Comment> comments;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User user;
     
     public Post(){
 
@@ -70,6 +70,14 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     
