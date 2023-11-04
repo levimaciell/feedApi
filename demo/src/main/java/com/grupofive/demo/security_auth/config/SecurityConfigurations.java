@@ -43,6 +43,7 @@ public class SecurityConfigurations {
             .requestMatchers(new AntPathRequestMatcher("/auth/login", HttpMethod.POST.name())).permitAll() //permitindo não autenticação ao logar
             .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/api/posts", HttpMethod.GET.name())).permitAll() //permitindo não autenticação do console h2
+            .requestMatchers(new AntPathRequestMatcher("/api/posts/**", HttpMethod.GET.name())).permitAll()
             .anyRequest().authenticated() //Diz que qualquer requisição da minha api deve ser autenticada. 
         )//Quais requisições http devem ser autorizadas
         .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
