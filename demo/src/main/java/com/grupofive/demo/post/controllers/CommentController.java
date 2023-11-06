@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,7 @@ import com.grupofive.demo.post.dto.CommentDto.PostCommentUpdateDto;
 import com.grupofive.demo.post.entities.Comment;
 import com.grupofive.demo.post.services.CommentService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/posts/comments")
 public class CommentController {
@@ -27,8 +28,11 @@ public class CommentController {
     private CommentService service;
 
     @PostMapping
-    public void createComment(@RequestBody PostCommentDto comment){
-        service.createComment(comment);
+    public void createComment(@RequestBody PostCommentDto comment, @RequestHeader("Authorization") String header){
+
+        String token = header.replace("Bearer ", "");
+
+        service.createComment(comment, token);
     }
 
     @GetMapping

@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.grupofive.demo.User.entities.User;
+import com.grupofive.demo.User.repositories.UserRepository;
 import com.grupofive.demo.post.dto.PostDto.PostCreationDto;
 import com.grupofive.demo.post.dto.PostDto.PostUpdateDto;
 import com.grupofive.demo.post.entities.Post;
 import com.grupofive.demo.post.exceptions.PostServiceException;
 import com.grupofive.demo.post.repositories.PostRepository;
+import com.grupofive.demo.security_auth.TokenService;
 
 import jakarta.transaction.Transactional;
 
@@ -21,24 +25,45 @@ public class PostService {
 
     @Autowired
     private PostRepository repository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private TokenService service;
     
     @Transactional
-    public void createPost(PostCreationDto post){
-        if(post.getPostMessage().isBlank()) {
-            throw new PostServiceException("Post Message is empty!", HttpStatus.BAD_REQUEST);
+    public void createPost(PostCreationDto post, String token){
+
+        try{
+            
+            //Pegar o dono do post
+            String subject = service.validateToken(token);
+
+            User user = userRepository.findByUsername(subject);
+            
+            if(post.getPostMessage().isBlank()) {
+                throw new PostServiceException("Post Message is empty!", HttpStatus.BAD_REQUEST);
+            }
+
+            //Create empty post. Let spring take care of the id
+            Post postCreate = new Post();
+            postCreate.setMessage(post.getPostMessage());
+            postCreate.setUser(user);
+
+            repository.save(postCreate);
+        }
+        catch(JWTCreationException e){
+            throw new PostServiceException(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
 
-        //Create empty post. Let spring take care of the id
-        Post postCreate = new Post();
-        postCreate.setMessage(post.getPostMessage());
-
-        repository.save(postCreate);
+        
     }
 
     public Post retrievePost(String id){
         if(id == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
+
         try{
+            
             Post post = repository.findById(id).get();
             return post;
         }
@@ -49,6 +74,8 @@ public class PostService {
 
     @Transactional
     public Post updatePost(PostUpdateDto postUpdate){
+
+
         if(postUpdate.getChangeId() == null)
             throw new PostServiceException("Given id is null!", HttpStatus.BAD_REQUEST);
         
