@@ -3,9 +3,10 @@ FROM ubuntu:latest AS build
 RUN apt-get update
 RUN apt-get install openjdk-17-jdk -y
 
-WORKDIR demo
+WORKDIR /demo
 
-COPY . .
+COPY demo/pom.xml .
+COPY demo/src src
 
 RUN apt-get install maven -y
 RUN mvn clean install
